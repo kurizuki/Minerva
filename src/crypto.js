@@ -1,6 +1,6 @@
-import {randomBytes, pbkdf2Sync  } from 'node:crypto';
+import {randomBytes, pbkdf2Sync} from 'node:crypto';
 
-function generateHash(data, salt, pepper) {
+export function generateHash(data, salt, pepper) {
   if (data == null || salt == null || pepper == null) {
     throw new Error('data, salt and pepper arguments required');
   }
@@ -10,12 +10,12 @@ function generateHash(data, salt, pepper) {
   }
 
   // Numero de iteraciones recomendadas por la documentacion 100000
-  const hash = pbkdf2Sync(data + pepper, salt, 100000, 8, 'sha256');
-  const result = hash.toString('hex');
-
-  return result;
+  const hash = pbkdf2Sync(data + pepper, salt, 100000, 64, 'sha512');
+  
+  // Retorna el hash en formato hexadecimal
+  return hash.toString('hex');
 }
 
-function generateSalt() {
+export function generateSalt() {
   return randomBytes(8).toString('hex');
 }
