@@ -1,6 +1,6 @@
 import express, { json } from 'express';
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.disable('x-powered-by');
 app.use(json());
