@@ -1,7 +1,7 @@
 {
   "name": "minerva",
   "version": "1.0.0",
-  "description": "Servidor para sneak Empire",
+  "description": "Api",
   "main": "app.js",
   "type": "module",
   "scripts": {
