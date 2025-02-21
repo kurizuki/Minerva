@@ -1,4 +1,4 @@
-import express, { json } from 'express';
+import express from 'express';
 // MIDDLEWARES
 import { corsMiddleware } from './middlewares/cors.js';
 import { httpMonitorMiddleware } from './middlewares/httpLogger.js';
@@ -8,9 +8,13 @@ import { customerRouters } from './routes/customer.js';
 export const app = express();
 
 app.use(httpMonitorMiddleware)
-app.use(json());
+app.use(express.json());
 app.disable('x-powered-by');
 app.use(corsMiddleware)
+
+app.get('/',(req, res) => {
+  res.send('Hola mundo!!!!')
+});
 
 app.use('/customer', customerRouters);
 
