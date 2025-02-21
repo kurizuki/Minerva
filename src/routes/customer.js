@@ -12,8 +12,7 @@ customerRouters.post('/login',(req, res) => {
 customerRouters.post('/register',(req, res) => {
     const {email, password} = req.body;
 
-    console.log(email + password);
-    res.send("ho");
+    res.send("h");
 
 });
 customerRouters.post('/logout',(req, res) => {
