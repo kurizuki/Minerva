@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const customerSchema = z.object({
+const customerSchema = z.object({
   fullName: z
     .string({ required_error: 'El nombre completo es requerido' })
     .refine(value => value.trim().length > 0, {
@@ -28,3 +28,7 @@ export const customerSchema = z.object({
 		.max(22, 'La contraseña como maximo puede tener 22 caracteres')
 		.regex(/^[a-zA-Z0-9\s]+$/, 'La contraseña solo puede contener letras, espacios y números')
 	});
+
+export function validateCustomer(object) {
+  return customerSchema.safeParse(object);
+}
