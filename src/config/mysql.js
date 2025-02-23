@@ -4,8 +4,8 @@ export const connection = mysql.createPool({
   host:'localhost',
   port:'3306',
   database: 'thot',
-  user: process.env.USER,
-  password: process.env.PASSWORD,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
 
   //Si todas las conexiones estan en uso, las solicitudes adicionales se quedaran en cola
   waitForConnections: true,
