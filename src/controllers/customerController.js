@@ -25,12 +25,12 @@ export const login = (req, res) => {
 
   const {email, password} = req.body;
 
-  const salt = 0;
-  const hash = generateHash(password, salt, process.env.PEPPER);
-
-
-
-  res.send(hash)
+  try {
+    const salt = generateSalt();
+    const hash = generateHash(password, salt, process.env.PEPPER);
+  } catch (error) {
+    return res.status(500).send("Error interno del servidor al procesar las credenciales")
+  }
 };
 
 export const logout = (req, res) => {
