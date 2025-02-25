@@ -1,26 +1,13 @@
-// src/services/usuarioService.js
-const usuarioData = require('../data/usuarioDataAccess');
-const bcrypt = require('bcrypt');
+import {registerCustomer, getCustomerPassword} from '../data/customerData.js';
 
-async function registrarUsuario(datosUsuario) {
-  const { email, contraseña } = datosUsuario;
-  const usuarioExistente = await usuarioData.obtenerUsuarioPorEmail(email);
-
-  if (usuarioExistente) {
-    throw new Error('El usuario ya existe');
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(contraseña, salt);
-
-  const nuevoUsuario = {
-    ...datosUsuario,
-    contraseña: hash
-  };
-
-  return await usuarioData.crearUsuario(nuevoUsuario);
+export async function register(fullName, email, password) {
+  await registerCustomer(fullName, email, password);
 }
 
-module.exports = {
-  registrarUsuario
-};
+export async function login(email, password) {
+  const result = await getCustomerPassword(email);
+
+  if (customer.Password !== password) {
+    throw new Error('Contraseña incorrecta');
+  }
+}

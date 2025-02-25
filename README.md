@@ -1,2 +1,2 @@
 # Minerva
-Servidor para sneak Empire
+APIR REST

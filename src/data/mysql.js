@@ -1,11 +1,11 @@
 import mysql from 'mysql2/promise';
 
-export const connection = mysql.createPool({
+const connection = mysql.createPool({
   host:'localhost',
-  port:'3306',
-  database: 'thot',
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  port: 3306,
+  database: 'thoth',
+  user: 'root',
+  password: 'root',
 
   //Si todas las conexiones estan en uso, las solicitudes adicionales se quedaran en cola
   waitForConnections: true,
@@ -14,3 +14,5 @@ export const connection = mysql.createPool({
   //Con un valor de 0, se establece que no hay límite en la cantidad de solicitudes que se pueden poner en cola. 
   queueLimit: 0
 });
+
+export default connection;
