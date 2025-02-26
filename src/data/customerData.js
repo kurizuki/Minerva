@@ -1,6 +1,6 @@
 import connection from './mysql.js';
 
-export async function isCustomerEmailExists(email) {
+async function isCustomerEmailExists(email) {
   const [result] = await connection.query('SELECT Email FROM User WHERE Email = ?', [email]);
   
   if (result.length === 0) {
