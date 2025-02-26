@@ -3,7 +3,7 @@ import express from 'express';
 import { corsMiddleware } from './middlewares/cors.js';
 import { httpMonitorMiddleware } from './middlewares/httpLogger.js';
 // ROUTES
-import { customerRouters } from './routes/customer.js';
+import { customerRouters } from './routes/customerRoute.js';
 
 export const app = express();
 

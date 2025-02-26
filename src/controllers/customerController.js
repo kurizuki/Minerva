@@ -1,4 +1,4 @@
-import { validateCustomerLogin, validateCustomerRegister } from '../schemas/customer.js';
+import { validateCustomerLogin, validateCustomerRegister } from '../schemas/customerSchema.js';
 import {generateHash, generateSalt} from '../libs/crypto.js';
 
 
