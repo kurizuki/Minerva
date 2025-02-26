@@ -271,12 +271,14 @@ DROP TABLE IF EXISTS `stockentry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stockentry` (
+  `StockEntryID` int unsigned NOT NULL AUTO_INCREMENT,
   `ProductID` int unsigned NOT NULL,
   `SupplierID` int unsigned NOT NULL,
   `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `Price` decimal(20,3) NOT NULL,
   `Amount` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`ProductID`,`SupplierID`),
+  PRIMARY KEY (`StockEntryID`),
+  KEY `ProductID` (`ProductID`),
   KEY `SupplierID` (`SupplierID`),
   CONSTRAINT `stockentry_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE,
   CONSTRAINT `stockentry_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`) ON DELETE CASCADE
@@ -309,4 +311,4 @@ CREATE TABLE `supplier` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-26 10:14:27
+-- Dump completed on 2025-02-26 17:50:02
