@@ -1,8 +1,7 @@
+import { registerCustomer, getCustomerCredentials } from '../services/customerService.js';
+
 import { validateCustomerLogin, validateCustomerRegister } from '../schemas/customerSchema.js';
-import {generateHash, generateSalt} from '../libs/crypto.js';
-
-
-import {registerCustomer, getCustomerCredentials} from '../data/customerData.js';
+import { generateHash, generateSalt } from '../libs/crypto.js';
 
 
 export const register = async (req, res) => {
@@ -19,7 +18,7 @@ export const register = async (req, res) => {
 
   try {
     await registerCustomer(fullName, email, hash, salt);
-    res.status(201).send("Usuario registrado correctamente");
+    return res.status(201).send("Usuario registrado correctamente");
   } catch (error) {
     res.status(500).send(error.message);
     // Aqui iria el registro en la tabla de errores db
@@ -37,18 +36,19 @@ export const login = async (req, res) => {
 
   try {
     const customerCredentials = await getCustomerCredentials(email);
-    const passwordDB = customerCredentials.Password; // Accede a la propiedad Password
-    const saltDB = customerCredentials.Salt; // Accede a la propiedad Salt
-
-    const hashCustomer = generateHash(password, saltDB, process.env.PEPPER);
-
-    if (passwordDB === hashCustomer) {
-      return res.status(200).send("Credenciales correctas");
-    } else {
-      return res.status(401).send("Credenciales incorrectas");
+    if (customerCredentials === undefined) {
+      return res.status(401).send("Credenciales inválidas");      
     }
+    const hashCustomer = generateHash(password, customerCredentials.Salt, process.env.PEPPER);
+
+    if (customerCredentials.Password !== hashCustomer) {
+      return res.status(401).send("Credenciales inválidas");
+    }  
+    
+    return res.status(200).send("Credenciales válidas");
   } catch (error) {
-    return res.status(500).send('credenciales incorrectas');
+    console.log(error);
+    return res.status(500).send('Error al procesar las credenciales');
   }
 };
 

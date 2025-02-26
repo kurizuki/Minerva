@@ -1,7 +1,7 @@
 import connection from './mysql.js';
 
 async function isCustomerEmailExists(email) {
-  const [result] = await connection.query('SELECT Email FROM User WHERE Email = ?', [email]);
+  const [result] = await connection.query('SELECT Email FROM Customer WHERE Email = ?', [email]);
   
   if (result.length === 0) {
     return false;
@@ -10,7 +10,7 @@ async function isCustomerEmailExists(email) {
   return true;
 }
 
-export async function registerCustomer(fullName, email, password, salt) {
+export async function registerCustomerDB(fullName, email, password, salt) {
   const isEmailExists = await isCustomerEmailExists(email);
 
   if (isEmailExists) {
@@ -18,7 +18,7 @@ export async function registerCustomer(fullName, email, password, salt) {
   }
 
   const [result] = await connection.query(
-    'INSERT INTO User (FullName, email, Password, salt) VALUES (?, ?, ?, ?)',
+    'INSERT INTO Customer (FullName, Email, Password, salt) VALUES (?, ?, ?, ?)',
     [fullName, email, password, salt]
   );
   
@@ -27,12 +27,8 @@ export async function registerCustomer(fullName, email, password, salt) {
   }
 }
 
-export async function getCustomerCredentials(email) {
-  const [result] = await connection.query('SELECT Password, Salt FROM User WHERE Email = ?', [email]);
+export async function getCustomerCredentialsDB(email) {
+  const [result] = await connection.query('SELECT Password, Salt FROM Customer WHERE Email = ?', [email]);
   
-  if (result.length === 0) {
-    throw new Error('El usuario no existe');
-  } 
-
   return result[0];
 }

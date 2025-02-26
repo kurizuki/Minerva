@@ -1,14 +1,11 @@
 import mysql from 'mysql2/promise';
 
-const user = process.env.DB_USER;
-const password = process.env.DB_PASSWORD;
-
 const connection = mysql.createPool({
   host:'localhost',
   port: 3306,
-  database: 'thoth',
-  user: user,
-  password: password,
+  database: 'thot',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
 
   //Si todas las conexiones estan en uso, las solicitudes adicionales se quedaran en cola
   waitForConnections: true,
