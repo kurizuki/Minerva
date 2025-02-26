@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `thoth` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `thoth`;
+CREATE DATABASE  IF NOT EXISTS `thot` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `thot`;
 -- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: thoth
+-- Host: localhost    Database: thot
 -- ------------------------------------------------------
 -- Server version	8.0.40
 
@@ -18,6 +18,175 @@ USE `thoth`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `apierror`
+--
+
+DROP TABLE IF EXISTS `apierror`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `apierror` (
+  `APIErrorID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Endpoint` varchar(255) NOT NULL,
+  `HttpMethod` enum('GET','POST','PUT','DELETE','PATCH') NOT NULL,
+  `StatusCode` int unsigned NOT NULL,
+  `ErrorMessage` text NOT NULL,
+  `Request` json DEFAULT NULL,
+  `Response` json DEFAULT NULL,
+  `IPAddress` varchar(45) DEFAULT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`APIErrorID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `blockedips`
+--
+
+DROP TABLE IF EXISTS `blockedips`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blockedips` (
+  `IPAddress` varchar(45) NOT NULL,
+  `Reason` varchar(400) DEFAULT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`IPAddress`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `brand`
+--
+
+DROP TABLE IF EXISTS `brand`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `brand` (
+  `BrandID` varchar(50) NOT NULL,
+  `Ruc` varchar(50) NOT NULL,
+  PRIMARY KEY (`BrandID`),
+  UNIQUE KEY `Ruc` (`Ruc`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `CategoryID` varchar(50) NOT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`CategoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `connectionlogs`
+--
+
+DROP TABLE IF EXISTS `connectionlogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `connectionlogs` (
+  `ConnectionLogsID` int unsigned NOT NULL AUTO_INCREMENT,
+  `IPAddress` varchar(45) NOT NULL,
+  `HttpMethod` enum('GET','POST','PUT','DELETE','PATCH') NOT NULL,
+  `Endpoint` varchar(255) NOT NULL,
+  `StatusCode` int unsigned NOT NULL,
+  `ResponseTimeMs` int unsigned NOT NULL,
+  `ResponseSizeBytes` int unsigned NOT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ConnectionLogsID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contactform`
+--
+
+DROP TABLE IF EXISTS `contactform`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contactform` (
+  `ContactFormID` int unsigned NOT NULL AUTO_INCREMENT,
+  `FullName` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Topic` varchar(50) NOT NULL,
+  `Message` varchar(500) NOT NULL,
+  PRIMARY KEY (`ContactFormID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `customer` (
+  `CustomerID` int unsigned NOT NULL AUTO_INCREMENT,
+  `FullName` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Password` varchar(128) NOT NULL,
+  `Salt` varchar(16) NOT NULL,
+  PRIMARY KEY (`CustomerID`),
+  UNIQUE KEY `Email` (`Email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `dealer`
+--
+
+DROP TABLE IF EXISTS `dealer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dealer` (
+  `DealerID` varchar(8) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `LastName` varchar(50) NOT NULL,
+  `Email` varchar(128) NOT NULL,
+  `Salt` varchar(16) NOT NULL,
+  PRIMARY KEY (`DealerID`),
+  UNIQUE KEY `Email` (`Email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `paymentinformation`
+--
+
+DROP TABLE IF EXISTS `paymentinformation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paymentinformation` (
+  `PaymentInformationID` int unsigned NOT NULL AUTO_INCREMENT,
+  `PaymentMethodID` varchar(20) NOT NULL,
+  `TransactionID` varchar(100) NOT NULL,
+  PRIMARY KEY (`PaymentInformationID`),
+  KEY `PaymentMethodID` (`PaymentMethodID`),
+  CONSTRAINT `paymentinformation_ibfk_1` FOREIGN KEY (`PaymentMethodID`) REFERENCES `paymentmethod` (`PaymentMethodID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `paymentmethod`
+--
+
+DROP TABLE IF EXISTS `paymentmethod`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paymentmethod` (
+  `PaymentMethodID` varchar(20) NOT NULL,
+  `Bank` varchar(50) NOT NULL,
+  PRIMARY KEY (`PaymentMethodID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `product`
 --
 
@@ -26,56 +195,52 @@ DROP TABLE IF EXISTS `product`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
   `ProductID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) DEFAULT NULL,
-  `Price` decimal(20,3) DEFAULT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Price` decimal(20,3) NOT NULL,
   `Description` varchar(100) DEFAULT NULL,
-  `Stock` int unsigned DEFAULT NULL,
-  `BarCode` int unsigned DEFAULT NULL,
-  `Brand` varchar(50) DEFAULT NULL,
-  `Model` varchar(50) DEFAULT NULL,
-  `ColorWay` varchar(50) DEFAULT NULL,
-  `Sizes` varchar(50) DEFAULT NULL,
-  `Category` varchar(50) DEFAULT NULL,
-  `Image` varchar(50) DEFAULT NULL,
+  `Stock` int unsigned NOT NULL,
+  `Barcode` int unsigned NOT NULL,
+  `BrandID` varchar(50) NOT NULL,
+  `Model` varchar(50) NOT NULL,
+  `ColorWay` varchar(50) NOT NULL,
+  `Sizes` varchar(50) NOT NULL,
+  `CategoryID` varchar(50) DEFAULT NULL,
+  `Image` varchar(100) DEFAULT NULL,
   `ReleaseDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`ProductID`)
+  PRIMARY KEY (`ProductID`),
+  KEY `BrandID` (`BrandID`),
+  KEY `CategoryID` (`CategoryID`),
+  CONSTRAINT `product_ibfk_1` FOREIGN KEY (`BrandID`) REFERENCES `brand` (`BrandID`),
+  CONSTRAINT `product_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product`
+-- Table structure for table `request`
 --
 
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `productxstockentry`
---
-
-DROP TABLE IF EXISTS `productxstockentry`;
+DROP TABLE IF EXISTS `request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `productxstockentry` (
-  `ProductID` int unsigned DEFAULT NULL,
-  `StockEntryID` int unsigned DEFAULT NULL,
-  KEY `productxstockentry_fk_ProductID` (`ProductID`),
-  KEY `productxstockentry_fk_StockEntryID` (`StockEntryID`),
-  CONSTRAINT `productxstockentry_fk_ProductID` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`),
-  CONSTRAINT `productxstockentry_fk_StockEntryID` FOREIGN KEY (`StockEntryID`) REFERENCES `stockentry` (`StockEntryID`)
+CREATE TABLE `request` (
+  `RequestID` int unsigned NOT NULL AUTO_INCREMENT,
+  `DealerID` varchar(8) DEFAULT NULL,
+  `CustomerID` int unsigned NOT NULL,
+  `PaymentInformationID` int unsigned NOT NULL,
+  `DeliveryAddress` varchar(50) NOT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `EstimatedShippingDate` datetime NOT NULL,
+  `ReceptionDate` datetime NOT NULL,
+  `TotalPrice` decimal(20,3) NOT NULL,
+  PRIMARY KEY (`RequestID`),
+  KEY `DealerID` (`DealerID`),
+  KEY `CustomerID` (`CustomerID`),
+  KEY `PaymentInformationID` (`PaymentInformationID`),
+  CONSTRAINT `request_ibfk_1` FOREIGN KEY (`DealerID`) REFERENCES `dealer` (`DealerID`),
+  CONSTRAINT `request_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
+  CONSTRAINT `request_ibfk_3` FOREIGN KEY (`PaymentInformationID`) REFERENCES `paymentinformation` (`PaymentInformationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `productxstockentry`
---
-
-LOCK TABLES `productxstockentry` WRITE;
-/*!40000 ALTER TABLE `productxstockentry` DISABLE KEYS */;
-/*!40000 ALTER TABLE `productxstockentry` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sale`
@@ -86,80 +251,17 @@ DROP TABLE IF EXISTS `sale`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sale` (
   `SaleID` int unsigned NOT NULL AUTO_INCREMENT,
-  `SellerID` int unsigned DEFAULT NULL,
-  `UserID` int unsigned DEFAULT NULL,
-  `SaleDate` datetime DEFAULT NULL,
-  `TotalPrice` decimal(20,3) DEFAULT NULL,
+  `ProductID` int unsigned NOT NULL,
+  `RequestID` int unsigned NOT NULL,
+  `Amount` int unsigned NOT NULL,
+  `TotalPrice` decimal(20,3) NOT NULL,
   PRIMARY KEY (`SaleID`),
-  KEY `fk_UserID` (`UserID`),
-  KEY `fk_SellerID` (`SellerID`),
-  CONSTRAINT `fk_SellerID` FOREIGN KEY (`SellerID`) REFERENCES `seller` (`SellerID`),
-  CONSTRAINT `fk_UserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
+  KEY `ProductID` (`ProductID`),
+  KEY `RequestID` (`RequestID`),
+  CONSTRAINT `sale_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`),
+  CONSTRAINT `sale_ibfk_2` FOREIGN KEY (`RequestID`) REFERENCES `request` (`RequestID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sale`
---
-
-LOCK TABLES `sale` WRITE;
-/*!40000 ALTER TABLE `sale` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sale` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `saledetail`
---
-
-DROP TABLE IF EXISTS `saledetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `saledetail` (
-  `SaleID` int unsigned DEFAULT NULL,
-  `ProductID` int unsigned DEFAULT NULL,
-  `Amount` int unsigned DEFAULT NULL,
-  `TotalPrice` decimal(20,3) DEFAULT NULL,
-  KEY `fk_SaleID` (`SaleID`),
-  KEY `fk_ProductID` (`ProductID`),
-  CONSTRAINT `fk_ProductID` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`),
-  CONSTRAINT `fk_SaleID` FOREIGN KEY (`SaleID`) REFERENCES `sale` (`SaleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `saledetail`
---
-
-LOCK TABLES `saledetail` WRITE;
-/*!40000 ALTER TABLE `saledetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `saledetail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `seller`
---
-
-DROP TABLE IF EXISTS `seller`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `seller` (
-  `SellerID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  `Password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`SellerID`),
-  UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `seller`
---
-
-LOCK TABLES `seller` WRITE;
-/*!40000 ALTER TABLE `seller` DISABLE KEYS */;
-/*!40000 ALTER TABLE `seller` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stockentry`
@@ -169,47 +271,17 @@ DROP TABLE IF EXISTS `stockentry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stockentry` (
-  `StockEntryID` int unsigned NOT NULL AUTO_INCREMENT,
-  `DateStock` datetime DEFAULT NULL,
+  `ProductID` int unsigned NOT NULL,
+  `SupplierID` int unsigned NOT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Price` decimal(20,3) NOT NULL,
   `Amount` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`StockEntryID`)
+  PRIMARY KEY (`ProductID`,`SupplierID`),
+  KEY `SupplierID` (`SupplierID`),
+  CONSTRAINT `stockentry_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE,
+  CONSTRAINT `stockentry_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stockentry`
---
-
-LOCK TABLES `stockentry` WRITE;
-/*!40000 ALTER TABLE `stockentry` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stockentry` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `stockinputxsupplier`
---
-
-DROP TABLE IF EXISTS `stockinputxsupplier`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `stockinputxsupplier` (
-  `StockEntryID` int unsigned DEFAULT NULL,
-  `SupplierID` int unsigned DEFAULT NULL,
-  KEY `StockInputXSupplier_fk_StockEntryID` (`StockEntryID`),
-  KEY `StockInputXSupplier_fk_SupplierID` (`SupplierID`),
-  CONSTRAINT `StockInputXSupplier_fk_StockEntryID` FOREIGN KEY (`StockEntryID`) REFERENCES `stockentry` (`StockEntryID`),
-  CONSTRAINT `StockInputXSupplier_fk_SupplierID` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stockinputxsupplier`
---
-
-LOCK TABLES `stockinputxsupplier` WRITE;
-/*!40000 ALTER TABLE `stockinputxsupplier` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stockinputxsupplier` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `supplier`
@@ -220,47 +292,13 @@ DROP TABLE IF EXISTS `supplier`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `supplier` (
   `SupplierID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) DEFAULT NULL,
+  `Name` varchar(50) NOT NULL,
   `Address` varchar(50) DEFAULT NULL,
   `Phone` varchar(50) DEFAULT NULL,
   `Email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`SupplierID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `supplier`
---
-
-LOCK TABLES `supplier` WRITE;
-/*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
-/*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `UserID` int unsigned NOT NULL AUTO_INCREMENT,
-  `FullName` varchar(50) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  `Password` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -271,4 +309,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-12 20:51:54
+-- Dump completed on 2025-02-26 10:14:27
