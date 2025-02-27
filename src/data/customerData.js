@@ -1,4 +1,5 @@
 import connection from './mysql.js';
+import DataBaseError from '../errors/DataBaseError.js';
 
 async function isCustomerEmailExists(email) {
   const [result] = await connection.query('SELECT Email FROM Customer WHERE Email = ?', [email]);
@@ -14,7 +15,7 @@ export async function registerCustomerDB(fullName, email, password, salt) {
   const isEmailExists = await isCustomerEmailExists(email);
 
   if (isEmailExists) {
-    throw new Error('El usuario ya existe');
+    throw new DataBaseError('El usuario ya existe', 409);
   }
 
   const [result] = await connection.query(
@@ -23,7 +24,7 @@ export async function registerCustomerDB(fullName, email, password, salt) {
   );
   
   if (!(result.affectedRows > 0)) {
-    throw new Error('No se pudo registrar el usuario');
+    throw new DataBaseError('No se pudo registrar el usuario', 500);
   }
 }
 

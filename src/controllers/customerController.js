@@ -2,6 +2,7 @@ import { registerCustomer, getCustomerCredentials } from '../services/customerSe
 
 import { validateCustomerLogin, validateCustomerRegister } from '../schemas/customerSchema.js';
 import { generateHash, generateSalt } from '../libs/crypto.js';
+import DataBaseError from '../errors/DataBaseError.js';
 
 
 export const register = async (req, res) => {
@@ -20,8 +21,13 @@ export const register = async (req, res) => {
     await registerCustomer(fullName, email, hash, salt);
     return res.status(201).send("Usuario registrado correctamente");
   } catch (error) {
-    res.status(500).send(error.message);
-    // Aqui iria el registro en la tabla de errores db
+    if (error instanceof DataBaseError) {
+      console.error("Error en la base de datos:", error);
+      return res.status(error.statusCode).send("Error al registrar el usuario");
+    } else {
+      console.error("Error inesperado:", error);
+      return res.status(500).json({ error: error.message });
+    }
   }
 };
 
