@@ -22,10 +22,8 @@ export const register = async (req, res) => {
     return res.status(201).send("Usuario registrado correctamente");
   } catch (error) {
     if (error instanceof DataBaseError) {
-      console.error("Error en la base de datos:", error);
       return res.status(error.statusCode).send("Error al registrar el usuario");
     } else {
-      console.error("Error inesperado:", error);
       return res.status(500).json({ error: error.message });
     }
   }
@@ -53,7 +51,6 @@ export const login = async (req, res) => {
     
     return res.status(200).send("Credenciales válidas");
   } catch (error) {
-    console.log(error);
     return res.status(500).send('Error al procesar las credenciales');
   }
 };
