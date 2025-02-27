@@ -1,6 +1,7 @@
 const acceptedOrigins = [
   'http://localhost:8080',
-  'http://127.0.0.1:3000'
+  'http://127.0.0.1:3000',
+  'https://sneakempire.netlify.app'
 ];
 
 export function corsMiddleware(req, res, next) {
