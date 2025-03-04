@@ -3,7 +3,7 @@ import { registerCustomer, getCustomerCredentials } from '../services/customerSe
 import { validateCustomerLogin, validateCustomerRegister } from '../schemas/customerSchema.js';
 import { generateHash, generateSalt } from '../libs/crypto.js';
 import DataBaseError from '../errors/DataBaseError.js';
-
+import registerError from '../services/errorService.js';
 
 export const register = async (req, res) => {
   const result  = validateCustomerRegister(req.body);
@@ -22,8 +22,10 @@ export const register = async (req, res) => {
     return res.status(201).send("Usuario registrado correctamente");
   } catch (error) {
     if (error instanceof DataBaseError) {
+      registerError(req.path, req.method, 500, error.statusCode, req.body, error, req.ip);
       return res.status(error.statusCode).send("Error al registrar el usuario");
     } else {
+      registerError(req.path, req.method, 500, error.message, req.body, error, req.ip);
       return res.status(500).json({ error: error.message });
     }
   }
@@ -51,6 +53,7 @@ export const login = async (req, res) => {
     
     return res.status(200).send("Credenciales válidas");
   } catch (error) {
+    registerError(req.path, req.method, 500, error.statusCode, req.body, error, req.ip);
     return res.status(500).send('Error al procesar las credenciales');
   }
 };
